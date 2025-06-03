@@ -29,7 +29,7 @@ export type CartProductType = {
 export type SelectedImgType = {
     color: string,
     colorCode: string,
-    image: string
+    imageUrl: string
 }
 
 const Horizontal = () =>{
@@ -45,7 +45,7 @@ const ProductDetails:React.FC<ProductDetailsProps> = ({product}) => {
         description: product.description,
         category: product.category,
         brand: product.brand,
-        selectedImg: {...product.images[0]},
+        selectedImg: {...product.imageUrl[0]},
         quantity: 1,
         price: product.price,
     });
@@ -132,7 +132,7 @@ const ProductDetails:React.FC<ProductDetailsProps> = ({product}) => {
                     </>
                 ) : (
                     <>
-                        <SetColor cartProduct={cartProduct} images={product.images} handleColorSelect={handleColorSelect}/>
+                        {/* <SetColor cartProduct={cartProduct} imagesUrl={product.images} handleColorSelect={handleColorSelect}/> */}
                         <Horizontal />
                         <SetQuantity cartProduct={cartProduct} handleQtyIncrease={handleQtyIncrease} handleQtyDecrease={handleQtyDecrease} />
                         <Horizontal />

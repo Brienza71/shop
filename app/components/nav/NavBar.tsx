@@ -3,6 +3,8 @@ import Container from "../Container";
 import CartCount from "./CartCount";
 import UserMenu from "./UserMenu";
 import { getCurrentUser } from "@/actions/getCurrentUser";
+import Categories from "./Categories";
+import SearchBar from "./SearchBar";
 
 const NavBar = async () => {
     const currentUser = await getCurrentUser();
@@ -12,7 +14,7 @@ const NavBar = async () => {
                 <Container>
                     <div className="flex items-center justify-between gap-3 md-gap-0">
                         <Link href="/">KLP Shop</Link>
-                        <div className="hidden md:block">Pesquisar</div>
+                        <div className="hidden md:block"><SearchBar /></div>
                         <div className="flex items-center gap-8 md:gap-12">
                             <CartCount />
                             <UserMenu currentUser={currentUser}/>
@@ -20,6 +22,7 @@ const NavBar = async () => {
                     </div>
                 </Container>
             </div>
+            <Categories />
         </div>
     );
 }

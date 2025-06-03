@@ -7,7 +7,7 @@ export interface IProductParams{
 
 export default async function getProducts(params: IProductParams) {
     try{
-        const {category, searchTerm} = params;
+        const {category, searchTerm} = await params;
         let searchString = searchTerm;
 
         if(!searchTerm){

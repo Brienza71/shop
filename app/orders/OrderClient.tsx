@@ -7,14 +7,10 @@ import Heading from "@/app/components/Heading";
 import Status from "@/app/components/Status";
 import { MdAccessTimeFilled, MdDeliveryDining, MdDone, MdRemoveRedEye } from "react-icons/md";
 import ActionBtn from "@/app/components/ActionBtn";
-import axios from "axios";
-import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import { formatPrice } from "@/utils/formatPrice";
-import moment from "moment";
 
 
-interface ManageOrdersClientProps {
+interface OrdersClientProps {
     orders: ExtendedOrder[];
 }
 
@@ -22,34 +18,29 @@ type ExtendedOrder = Order & {
     user: User
 }
 
-const ManageOrdersClient: React.FC<ManageOrdersClientProps> = ({orders}) => {
+const OrdersClient = () => {
     const router = useRouter();
     let rows: any = [];
 
-    if (orders) {
-        rows = orders.map((order) => {
-            return {
-                id: order.id,
-                customer: order.user.name,
-                amount: formatPrice(order.amount / 100),
-                paymentStatus: order.status,
-                date: moment(order.createDate).fromNow(),
-                deliverStatus: order.deliveryStatus,
-            };
-        });
-    }
-    console.log(orders)
+    // if (orders) {
+    //     rows = orders.map((order) => {
+    //         return {
+    //             id: order.id,
+    //             custumer: order.user.name,
+    //             amount: formatPrice(order.amount / 100),
+    //             paymentStatus: order.status,
+    //             date: moment(order.createDate).fromNow(),
+    //             deliverStatus: order.deliveryStatus,
+    //         };
+    //     });
+    // }
 
     let columns: GridColDef[] = [
         { field: 'id', headerName: 'ID', width: 220 },
         { field: 'customer', headerName: 'Nome do Cliente', width: 130 },
         {
             field: 'amount', headerName: 'Total', width: 130, renderCell: (params) => {
-                return (
-                    <div className="font-bold text-slate-800">
-                        {params.row.amount}
-                    </div>
-                );
+                return (<div className="font-bold text-slate-800">{params.row.amount}</div>)
             }
         },
         {
@@ -78,46 +69,19 @@ const ManageOrdersClient: React.FC<ManageOrdersClientProps> = ({orders}) => {
             field: 'action', headerName: 'Ação', width: 200, renderCell: (params) => {
                 return (
                     <div className="flex justify-between gap-4 w-full">
-                        <ActionBtn icon={MdDeliveryDining} onClick={() => {handleDispatch(params.row.id)}} />
-                        <ActionBtn icon={MdDone} onClick={() => {handleDelivery(params.row.id)}} />
                         <ActionBtn icon={MdRemoveRedEye} onClick={() => {
-                            router.push(`order/${params.row.id}`);
+                            router.push(`order/${params.row.id}`)
                         }} />
                     </div>
                 );
             }
         },
     ];
-    //Função para Mudar o status do estoque
-    const handleDispatch = useCallback((id: string) => {
-        axios.put('/api/order', {
-            id,
-            deliveryStatus: 'dispatched'
-        }).then((res) => {
-            toast.success("Pedido enviado com sucesso!")
-            router.refresh();
-        }).catch((err) => {
-            toast.error("Oops! Algo está errado!")
-        });
-    }, []);
-
-    const handleDelivery = useCallback((id: string) => {
-        axios.put('/api/order', {
-            id,
-            deliveryStatus: 'delivered'
-        }).then((res) => {
-            toast.success("Pedido entregue com sucesso!")
-            router.refresh();
-        }).catch((err) => {
-            toast.error("Oops! Algo está errado!")
-        });
-    }, []);
-
     const paginationModel = { page: 0, pageSize: 9 };
     return (
         <div className="max-w-[1150px] m-auto text-xl">
             <div className="mb-4 mt-8">
-                <Heading title="Gerenciar Pedidos" center />
+                <Heading title="Pedidos" center />
             </div>
             <div style={{ height: 600, width: '100%' }}>
                 <Paper sx={{ height: 400, width: '100%' }}>
@@ -131,9 +95,8 @@ const ManageOrdersClient: React.FC<ManageOrdersClientProps> = ({orders}) => {
                     />
                 </Paper>
             </div>
-
         </div>
     )
 }
 
-export default ManageOrdersClient;
+export default OrdersClient;
