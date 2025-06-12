@@ -6,9 +6,11 @@ import Heading from "../components/Heading";
 import Button from "../components/Button";
 import ItemContent from "./ItemContent";
 import { formatPrice } from "@/utils/formatPrice";
+import { useRouter } from "next/navigation";
 
 const CartClient = () => {
     const {cartProducts, handleClearCart, cartTotalAmount} = useCart();
+    const router = useRouter();
 
     if(!cartProducts || cartProducts.length === 0){
         return(
@@ -47,7 +49,7 @@ const CartClient = () => {
                         <span>{formatPrice(cartTotalAmount)}</span>
                     </div>
                     <p className="text-slate-500">Taxas e frete calculados no checkout</p>
-                    <Button label="Checkout" onClick={() => {}} />
+                    <Button label="Checkout" onClick={() => router.push('/checkout')} />
                         <Link href={"/"} className="text-slate-500 flex items-center gap-1 mt-2">
                         <MdArrowBack />
                         <span>Continue Comprando</span>

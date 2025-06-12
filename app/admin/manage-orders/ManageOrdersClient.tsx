@@ -88,7 +88,7 @@ const ManageOrdersClient: React.FC<ManageOrdersClientProps> = ({orders}) => {
             }
         },
     ];
-    //Função para Mudar o status do estoque
+    
     const handleDispatch = useCallback((id: string) => {
         axios.put('/api/order', {
             id,

@@ -15,6 +15,7 @@ export default async function getOrderById(params: IParams) {
 
         if(!order) return null;
         return order;
+        
     } catch (error: any) {
         throw new Error(error)
     }

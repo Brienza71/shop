@@ -11,7 +11,7 @@ interface IParams {
 const Order = async({params} : {params: IParams}) => {
     const order = await getOrderById(params);
 
-    if(!order) return <NullData  title="Sem Pedidos"></NullData>
+    if(!order) return <NullData title="Sem Pedidos"></NullData>
     
     return <div className="p-8">
         <Container>

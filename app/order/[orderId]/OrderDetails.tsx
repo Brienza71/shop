@@ -10,11 +10,11 @@ import { MdAccessTimeFilled, MdDeliveryDining, MdDone } from "react-icons/md";
 import OrderItem from "./OrderItem";
 
 interface OrderDetailsProps{
-    order: Order
+    order: Order;
 }
 
 const OrderDetails: React.FC<OrderDetailsProps> = ({order}) => {
-    const router = useRouter()
+    // const router = useRouter()
     return (
         <div className="max-w-[1150px] m-auto flex flex-col gap-2">
             <div className="mt-8">
@@ -51,9 +51,9 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({order}) => {
                     <div className="justify-self-center">QTDE</div>
                     <div className="justify-self-end">TOTAL</div>
                 </div>
-                {order.products && order.products.map((item) => {
+                {/* {order.products && order.products.map((item) => {
                     return <OrderItem key={item.id} item={item}></OrderItem>;
-                })} 
+                })}  */}
             </div>
         </div>
     );

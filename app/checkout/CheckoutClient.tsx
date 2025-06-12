@@ -1,22 +1,41 @@
 'use client'
 import { useCart } from "@/hooks/useCart";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { products } from "@/utils/products";
+import Heading from "../components/Heading";
+import Input from "../components/inputs/Input";
+import TextArea from "../components/inputs/TextArea";
+import CustomCheckBox from "../components/inputs/CustomCheckBox";
+import CategoryInput from "../components/inputs/CategoryInput";
+import { FieldValues, useForm } from "react-hook-form";
 
 const CheckoutClient = () => {
     const {cartProducts, paymentIntent, handleSetPaymentIntent} = useCart();
-    const [loading, setLoading] = useState(false);
+    const [isSelected, setIsSelected] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(false);
     const [clientSecret, setClientSecret] = useState('');
+    const [isOpen, setIsOpen] = useState(false);
+    const {register, handleSubmit, formState: {errors}} = useForm<FieldValues>({
+            defaultValues: {
+                name: "",
+                city: "",
+                country: ""
+            },
+        });
+
+    const toogleOpen = useCallback(() => {
+            setIsOpen((prev) => !prev);
+        }, []);
 
     const router = useRouter();
 
     console.log("Payment Intent" + paymentIntent);
     useEffect(() => {
         if(cartProducts){
-            setLoading(true);
+            setIsLoading(true);
             setError(false);
 
             fetch("/api/create-payment-intent", {
@@ -27,7 +46,7 @@ const CheckoutClient = () => {
                     payment_intent_id: paymentIntent,
                 })
             }).then((res) => {
-                setLoading(false);
+                setIsLoading(false);
                 if(res.status === 401){
                     return router.push('/login')
                 }
@@ -47,7 +66,13 @@ const CheckoutClient = () => {
 
     return(
         <>
-            Checkout
+            <Heading title="Checkout" center/>
+            <Input id="name" label="Nome Completo" disabled={isLoading} register={register} errors={errors} required/>
+            <Input id="city" label="Cidade" disabled={isLoading} register={register} errors={errors} required/>
+            <Input id="country" label="Pais" disabled={isLoading} register={register} errors={errors} required/>
+            <Input id="line1" label="Rua" disabled={isLoading} register={register} errors={errors} required/>
+            <h2 className="font-semibold mt-4 mb-2">Forma de Pagamento</h2>
+            
         </>
     )
 }
